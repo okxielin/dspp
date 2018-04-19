@@ -15,7 +15,13 @@
         </div>
         <div class="uploading">
             <h4>上传创意</h4>
-            <el-tabs v-model="activeName" @tab-click="handleClick">
+            <dsp-tab :toDate="toDate" :editable="true" @edit="editFunc">
+                <dsp-tab-item v-for="i in toDate" :slot="i.name" :key="i.name">
+                    <uploader></uploader>
+                    <!-- <h1>我好想你</h1> -->
+                </dsp-tab-item>
+            </dsp-tab>
+            <!-- <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="创意1" name="first">
                     <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                         <img v-if="imageUrl" :src="imageUrl" class="avatar">
@@ -59,7 +65,7 @@
                     </div>
                     <div class="simples">多图</div>
                 </div>
-            </el-dialog>
+            </el-dialog> -->
         </div>
         <el-col>
             <el-button type="info" class="btn">提交</el-button>
@@ -68,25 +74,41 @@
 </template>
 
 <script>
+import dspTab from '../../components/dsp-tab.vue'
+import dspTabItem from '../../components/dsp-tab-item.vue'
+import uploader from './talSelected.vue'
 export default {
     data() {
         return {
+            len: 1,
             form: {
                 name: '请设置广告名称',
                 name1: '请设置广告名称',
                 name2: '请设置广告名称'
             },
             activeName: 'secord',
-            imageUrl: '',
-            centerDialogVisible: false
+            
+            centerDialogVisible: false,
+            toDate: [
+                {
+                    label: "创意1",
+                    name: '1'
+                }
+            ]
         }
     },
     methods: {
+        editFunc(){
+            this.toDate.push({
+                label: "创意"+ (++this.len),
+                name: 'tab-content'+this.len
+            })
+        },
         handleClick(tab, event) {
             console.log(tab, event)
         },
         handleAvatarSuccess(res, file) {
-            this.imageUrl = URL.createObjectURL(file.raw)
+            this.imageUrl ="http://localhost:9000/"+res.data+value
         },
         beforeAvatarUpload(file) {
             const isJPG = file.type === 'image/jpeg'
@@ -103,6 +125,11 @@ export default {
         simpleImg() {
             console.log(111)
         }
+    },
+    components: {
+        dspTab,
+        dspTabItem,
+        uploader
     }
 }
 </script>

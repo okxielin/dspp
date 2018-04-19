@@ -1,13 +1,31 @@
 <template>
     <div class="plan">
         <el-container>
-            <el-header style="height: 120px;">北冥有鱼，其名为鲲</el-header>
             <el-main>
+                <el-header style="height: 130px;">
+                    <el-aside style="width: 100px;">我好想你</el-aside>
+                    <el-main>
+                        <el-row>
+                            <el-col :span="24">满地的呢喃细语</el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="4">怎么会爱上了他</el-col>
+                            <el-col :span="4">忽冷忽热的温柔</el-col>
+                        </el-row>
+                        <el-row>
+                            <el-tabs>
+                                <el-tab-pane label="广告计划" name="first">广告计划</el-tab-pane>
+                                <el-tab-pane label="广告单元" name="second">广告单元</el-tab-pane>
+                                <el-tab-pane label="广告创意" name="third">广告创意</el-tab-pane>
+                            </el-tabs>
+                        </el-row>
+                    </el-main>
+                </el-header>
                 <el-row :gutter="20" style="paddingLeft: 20px">
                     <el-col :span="8">
                         <el-dropdown>
                             <span class="el-dropdown-link">
-                                下拉菜单
+                                计划名称:
                                 <i class="el-icon-arrow-down el-icon--right"></i>
                             </span>
                             <el-dropdown-menu slot="dropdown">
@@ -57,7 +75,7 @@
                     <el-col :span="6">
                         <el-dropdown>
                             <span class="el-dropdown-link">
-                                下拉菜单
+                                批量修改
                                 <i class="el-icon-arrow-down el-icon--right"></i>
                             </span>
                             <el-dropdown-menu slot="dropdown">
@@ -90,7 +108,13 @@
                     </el-col>
                 </el-row>
                 <el-table ref="multipleTable" :data="tableData3" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
-                    <el-table-column type="selection" width="55">
+                    <el-table-column type="selection" width="30">
+                    </el-table-column>
+                    <el-table-column width="70">
+                        <template slot-scope="scope">
+                            <el-switch v-model="scope.row.switch_flag" active-color="#13ce66" inactive-color="#2BD1B7" size="mini">
+                            </el-switch>
+                        </template>
                     </el-table-column>
                     <el-table-column label="日期" width="100">
                         <template slot-scope="scope">{{ scope.row.date }}</template>
@@ -105,10 +129,25 @@
                     </el-table-column>
                     <el-table-column prop="allmoney" label="总消耗(元)" width="90">
                     </el-table-column>
+                    <el-table-column prop="exposure" label="曝光量" width="90">
+                    </el-table-column>
+                    <el-table-column prop="click" label="点击量" width="90">
+                    </el-table-column>
+                    <el-table-column prop="clicksum" label="点击率" width="90">
+                    </el-table-column>
+                    <el-table-column prop="state" label="点击率" width="90">
+                    </el-table-column>
                 </el-table>
-                <div style="margin-top: 20px">
-                    <el-button @click="toggleSelection([tableData3[1], tableData3[2]])">切换第二、第三行的选中状态</el-button>
-                    <el-button @click="toggleSelection()">取消选择</el-button>
+                <div class="block">
+                    <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage4"
+                    :page-sizes="[100, 200, 300, 400]"
+                    :page-size="100"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="400">
+                    </el-pagination>
                 </div>
             </el-main>
         </el-container>
@@ -146,49 +185,96 @@ export default {
                 }]
             },
             value2: '',
-            tableData3: [{
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄',
-                budget: 34,
-                expenditure: 20,
-                allmoney: 100
-            }, {
-                date: '2016-05-02',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄',
-                budget: 34,
-                expenditure: 20,
-                allmoney: 100
-            }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄',
-                budget: 34,
-                expenditure: 20,
-                allmoney: 100
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄',
-                budget: 34,
-                allmoney: 100
-            }, {
-                date: '2016-05-08',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄',
-                budget: 34
-            }, {
-                date: '2016-05-06',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄',
-                budget: 34
-            }, {
-                date: '2016-05-07',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }],
-            multipleSelection: []
+            tableData3: [
+                {
+                    switch_flag: false,
+                    date: '2016-05-03',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    budget: 34,
+                    expenditure: 20,
+                    allmoney: 100,
+                    exposure: 2000,
+                    click: 1000,
+                    clicksum: '50%',
+                    state: '投放中'
+                },
+                {
+                    switch_flag: false,
+                    date: '2016-05-02',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    budget: 34,
+                    expenditure: 20,
+                    allmoney: 100,
+                    exposure: 2000,
+                    click: 1000,
+                    clicksum: '50%',
+                    state: '投放中'
+                },
+                {
+                    switch_flag: false,
+                    date: '2016-05-04',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    budget: 34,
+                    expenditure: 20,
+                    allmoney: 100,
+                    exposure: 2000,
+                    click: 1000,
+                    clicksum: '50%',
+                    state: '投放中'
+                },
+                {
+                    date: '2016-05-01',
+                    switch_flag: false,
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    budget: 34,
+                    allmoney: 100,
+                    exposure: 2000,
+                    click: 1000,
+                    clicksum: '50%',
+                    state: '投放中'
+                },
+                {
+                    date: '2016-05-08',
+                    switch_flag: false,
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    budget: 34,
+                    exposure: 2000,
+                    click: 1000,
+                    clicksum: '50%',
+                    state: '投放中'
+                },
+                {
+                    date: '2016-05-06',
+                    switch_flag: false,
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    budget: 34,
+                    exposure: 2000,
+                    click: 1000,
+                    clicksum: '50%',
+                    state: '投放中'
+                }, 
+                {
+                    date: '2016-05-07',
+                    switch_flag: false,
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    exposure: 2000,
+                    click: 1000,
+                    clicksum: '50%',
+                    state: '投放中'
+                }
+            ],
+            multipleSelection: [],
+            currentPage1: 5,
+            currentPage2: 5,
+            currentPage3: 5,
+            currentPage4: 4
         };
     },
     methods: {
@@ -203,6 +289,15 @@ export default {
       },
       handleSelectionChange(val) {
         this.multipleSelection = val;
+      },
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      },
+      handleClick(tab, event) {
+        console.log(tab, event);
       }
     }
 }
@@ -220,11 +315,14 @@ export default {
 }
 
 .el-header {
-    background: #ccc;
+    display: flex;
+    >.el-main{
+        margin-left: 20px;
+    }
 }
 
 .el-main {
-    background: #eee;
+    background: #fff;
 }
 
 .el-row {
