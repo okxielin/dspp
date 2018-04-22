@@ -18,54 +18,8 @@
             <dsp-tab :toDate="toDate" :editable="true" @edit="editFunc">
                 <dsp-tab-item v-for="i in toDate" :slot="i.name" :key="i.name">
                     <uploader></uploader>
-                    <!-- <h1>我好想你</h1> -->
                 </dsp-tab-item>
             </dsp-tab>
-            <!-- <el-tabs v-model="activeName" @tab-click="handleClick">
-                <el-tab-pane label="创意1" name="first">
-                    <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-                    <el-col :span="16">
-                        <el-form ref="form" :model="form" label-width="90px">
-                            <el-form-item label="广告文案:">
-                                <el-input v-model="form.name1"></el-input>
-                            </el-form-item>
-                        </el-form>
-                    </el-col>
-                    <el-col :span="16">
-                        <el-form ref="form" :model="form" label-width="90px">
-                            <el-form-item label="监控连接:">
-                                <el-input v-model="form.name2"></el-input>
-                            </el-form-item>
-                        </el-form>
-                    </el-col>
-                </el-tab-pane>
-                <el-tab-pane label="创意2" name="second">创意2</el-tab-pane>
-            </el-tabs>
-            <div class='add' @click="centerDialogVisible = true">+添加创意</div>
-            <el-dialog title="选择模板" :visible.sync="centerDialogVisible" width="30%">
-                <div class="add-left" @click="simpleImg">
-                    <div class="simple">
-                        <div class="simple-power"></div>
-                        <div>
-                            <p class="simple-head"></p>
-                            <p class="simple-head"></p>
-                        </div>
-                    </div>
-                    <div class="simples">单图</div>
-                </div>
-                <div class="add-right">
-                    <p class="simple-head"></p>
-                    <div>
-                        <p class="simple-power"></p>
-                        <p class="simple-power"></p>
-                        <p class="simple-power"></p>
-                    </div>
-                    <div class="simples">多图</div>
-                </div>
-            </el-dialog> -->
         </div>
         <el-col>
             <el-button type="info" class="btn">提交</el-button>

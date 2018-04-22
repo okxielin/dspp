@@ -4,6 +4,17 @@ const http = require("http");
 const Mock =require('mockjs')
 const querystring = require("querystring");
 const _ = require('lodash')
+const multer = require('multer')
+// console.log(multer)
+var storage = multer.diskStorage({
+  destination: (req, file, cb) =>{
+    cb(null, './uploads')
+  },
+  filename: (req, file, cb) => {
+    cb(null, req.originalname.split('.')[0] + '-' + Date.now() + '.' + req.originalname.split('.')[1])
+  }
+})
+var upload = multer({storage: storage})
 
 const queryApi = (url,methods,params)=>{
   return new Promise((resolve,reject)=>{
@@ -119,8 +130,15 @@ module.exports=(app)=>{
     res.send(mockData)
   })
 
-  app.post('dsp-creative/creative', (req, res) => {
-    
+  app.post('dsp-creative/creative/upload', upload.single('file'), (req, res) => {
+    res.send({
+      "data": {
+        "size": 2000,
+        "value": "",
+        "key": "2A36B67C6"
+      },
+      "status": 0
+    })
   })
 
 }

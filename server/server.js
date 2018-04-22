@@ -6,6 +6,7 @@ const api = require('./api')
 const app = express()
 
 app.use(bodyParser.json())
+app.use(express.static('./'))
 
 // token 验证
 function VerifyToken(){
@@ -25,7 +26,7 @@ app.all('*',(req,res,next) => {
   res.header('Access-Control-Allow-Origin','http://localhost:8080')
   res.header("Access-Control-Allow-Headers","Content-Type,Token,plantfrom");
   res.header("Content-Type", "application/json;charset=utf-8");
-  console.log(req.headers)
+
   VerifyToken(req.headers.token).then(res => {
     console.log(res)
   })
